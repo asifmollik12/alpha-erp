@@ -33,5 +33,8 @@ export const useClientState = create<AppState>((set) => ({
             }
           : agent
       ),
+      clients: state.clients.map((client) =>
+        client.id === clientId ? { ...client, agentId } : client
+      ),
     })),
 }));

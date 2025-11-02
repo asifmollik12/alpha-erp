@@ -51,7 +51,7 @@ interface AddAgentFormProps {
 
 export function AddAgentForm({ setOpen }: AddAgentFormProps) {
   const { toast } = useToast()
-  const { clients, addAgent } = useClientState();
+  const { clients, addAgent, assignClientToAgent } = useClientState();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -64,20 +64,27 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const newAgentId = new Date().getTime().toString();
     const assignedClientIds = values.assignedClients || [];
+    
     const newAgent: Agent = {
-      id: new Date().getTime().toString(),
+      id: newAgentId,
       name: values.name,
       email: values.email,
       country: values.country,
       visaType: values.visaType,
       assignedClients: assignedClientIds,
-      due: 0, // Default value
-      paid: 0, // Default value
+      due: 0, 
+      paid: 0,
       totalFiles: assignedClientIds.length,
-      avatar: `https://picsum.photos/seed/${Math.random()}/40/40`
+      avatar: `https://picsum.photos/seed/${newAgentId}/40/40`
     };
     addAgent(newAgent);
+
+    assignedClientIds.forEach(clientId => {
+        assignClientToAgent(newAgentId, clientId);
+    });
+
     toast({
       title: "Agent Added",
       description: `${values.name} has been successfully added.`,
@@ -208,7 +215,7 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
-                  <PopoverContent className="w-[450px] p-0">
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
                     <Command>
                       <CommandInput placeholder="Search client..." />
                       <CommandEmpty>No client found.</CommandEmpty>
