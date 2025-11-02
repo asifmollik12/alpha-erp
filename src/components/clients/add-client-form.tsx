@@ -45,7 +45,7 @@ interface AddClientFormProps {
 
 export function AddClientForm({ setOpen }: AddClientFormProps) {
   const { toast } = useToast()
-  const { addClient } = useClientState();
+  const addClient = useClientState((state) => state.addClient)
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -70,6 +70,7 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
       description: `${values.name} has been successfully added.`,
     })
     setOpen(false);
+    form.reset();
   }
 
   return (
