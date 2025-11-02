@@ -4,6 +4,9 @@ import { Table } from "@tanstack/react-table"
 import { Input } from "@/components/ui/input"
 import { Button } from "../ui/button"
 import { PlusCircle, Trash2 } from "lucide-react"
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "../ui/dialog"
+import React from "react"
+import { AddAgentForm } from "./add-agent-form"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -13,6 +16,7 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const numSelected = table.getFilteredSelectedRowModel().rows.length
+  const [isAddAgentOpen, setIsAddAgentOpen] = React.useState(false);
 
   return (
     <div className="flex items-center justify-between">
@@ -37,10 +41,23 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <Button size="sm" className="h-9 gap-1">
-        <PlusCircle className="h-4 w-4" />
-        <span className="hidden sm:inline">Add Agent</span>
-      </Button>
+      <Dialog open={isAddAgentOpen} onOpenChange={setIsAddAgentOpen}>
+        <DialogTrigger asChild>
+           <Button size="sm" className="h-9 gap-1">
+            <PlusCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Add Agent</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[525px]">
+          <DialogHeader>
+            <DialogTitle>Add New Agent</DialogTitle>
+            <DialogDescription>
+              Enter the details of the new agent and assign clients.
+            </DialogDescription>
+          </DialogHeader>
+          <AddAgentForm setOpen={setIsAddAgentOpen} />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

@@ -7,6 +7,7 @@ interface AppState {
   addClient: (client: Client) => void;
   deleteClients: (clientIds: string[]) => void;
   agents: Agent[];
+  addAgent: (agent: Agent) => void;
 }
 
 export const useClientState = create<AppState>((set) => ({
@@ -18,4 +19,6 @@ export const useClientState = create<AppState>((set) => ({
       clients: state.clients.filter((client) => !clientIds.includes(client.id)),
     })),
   agents: initialAgents,
+  addAgent: (agent) =>
+    set((state) => ({ agents: [agent, ...state.agents] })),
 }));
