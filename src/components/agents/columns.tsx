@@ -46,7 +46,7 @@ export const columns: ColumnDef<Agent>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0"
+          className="p-0 hover:bg-transparent"
         >
           Agent
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -80,13 +80,16 @@ export const columns: ColumnDef<Agent>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0"
+          className="p-0 hover:bg-transparent"
         >
           Country
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
+    cell: ({ row }) => {
+      return <div className="text-left">{row.getValue("country")}</div>
+    }
   },
   {
     accessorKey: "totalFiles",
