@@ -70,6 +70,10 @@ export const columns: ColumnDef<Agent>[] = [
     }
   },
   {
+    accessorKey: "passportNumber",
+    header: "Passport No.",
+  },
+  {
     accessorKey: "visaType",
     header: "Visa Specialization",
   },
@@ -80,13 +84,16 @@ export const columns: ColumnDef<Agent>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0 hover:bg-transparent justify-start"
+          className="p-0 hover:bg-transparent"
         >
           Country
           <ArrowUpDown className="ml-2 h-4 w-4" />
         </Button>
       )
     },
+    cell: ({ row }) => {
+      return <div>{row.getValue("country")}</div>
+    }
   },
   {
     accessorKey: "totalFiles",
