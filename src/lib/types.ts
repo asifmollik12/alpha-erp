@@ -9,6 +9,7 @@ export type Client = {
   status: ApplicationStatus;
   appliedDate: string;
   avatar: string;
+  agentId?: string;
 };
 
 export type Agent = {

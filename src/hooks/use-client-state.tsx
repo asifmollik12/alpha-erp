@@ -8,6 +8,7 @@ interface AppState {
   deleteClients: (clientIds: string[]) => void;
   agents: Agent[];
   addAgent: (agent: Agent) => void;
+  assignClientToAgent: (agentId: string, clientId: string) => void;
 }
 
 export const useClientState = create<AppState>((set) => ({
@@ -21,4 +22,16 @@ export const useClientState = create<AppState>((set) => ({
   agents: initialAgents,
   addAgent: (agent) =>
     set((state) => ({ agents: [agent, ...state.agents] })),
+  assignClientToAgent: (agentId, clientId) =>
+    set((state) => ({
+      agents: state.agents.map((agent) =>
+        agent.id === agentId
+          ? {
+              ...agent,
+              assignedClients: [...(agent.assignedClients || []), clientId],
+              totalFiles: (agent.assignedClients?.length || 0) + 1,
+            }
+          : agent
+      ),
+    })),
 }));

@@ -7,7 +7,6 @@ import { Button } from "@/components/ui/button"
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -25,10 +24,11 @@ import { useToast } from "@/hooks/use-toast"
 import { useClientState } from "@/hooks/use-client-state"
 import { Client } from "@/lib/types"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
-import { CalendarIcon } from "lucide-react"
+import { CalendarIcon, Check, ChevronsUpDown } from "lucide-react"
 import { Calendar } from "../ui/calendar"
 import { cn } from "@/lib/utils"
 import { format } from "date-fns"
+import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -42,6 +42,7 @@ const formSchema = z.object({
   appliedDate: z.date({
     required_error: "An application date is required.",
   }),
+  agentId: z.string().optional(),
 })
 
 const countries = ["USA", "UK", "Canada", "Australia", "Germany"]
@@ -53,7 +54,7 @@ interface AddClientFormProps {
 
 export function AddClientForm({ setOpen }: AddClientFormProps) {
   const { toast } = useToast()
-  const addClient = useClientState((state) => state.addClient)
+  const { agents, addClient, assignClientToAgent } = useClientState()
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -65,17 +66,24 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const newClientId = new Date().getTime().toString();
     const newClient: Client = {
-      id: new Date().getTime().toString(),
+      id: newClientId,
       name: values.name,
       email: values.email,
       country: values.country,
       visaType: values.visaType,
       status: 'New',
       appliedDate: values.appliedDate.toISOString().split('T')[0],
-      avatar: `https://picsum.photos/seed/${Math.random()}/40/40`
+      avatar: `https://picsum.photos/seed/${Math.random()}/40/40`,
+      agentId: values.agentId,
     };
     addClient(newClient);
+
+    if (values.agentId) {
+      assignClientToAgent(values.agentId, newClientId);
+    }
+
     toast({
       title: "Client Added",
       description: `${values.name} has been successfully added.`,
@@ -83,6 +91,8 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
     setOpen(false);
     form.reset();
   }
+
+  const agentOptions = agents.map(a => ({ value: a.id, label: a.name }));
 
   return (
     <Form {...form}>
@@ -194,6 +204,68 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
                   />
                 </PopoverContent>
               </Popover>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="agentId"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Assign Agent</FormLabel>
+               <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant="outline"
+                        role="combobox"
+                        className={cn(
+                          "w-full justify-between",
+                          !field.value && "text-muted-foreground"
+                        )}
+                      >
+                        {field.value
+                          ? agentOptions.find(
+                              (agent) => agent.value === field.value
+                            )?.label
+                          : "Select agent"}
+                        <ChevronsUpDown className="ml-2 h-4 w-4 shrink-0 opacity-50" />
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className="w-[--radix-popover-trigger-width] p-0">
+                    <Command>
+                      <CommandInput
+                        placeholder="Search agent..."
+                      />
+                      <CommandEmpty>No agent found.</CommandEmpty>
+                      <CommandList>
+                        <CommandGroup>
+                          {agentOptions.map((option) => (
+                            <CommandItem
+                              value={option.label}
+                              key={option.value}
+                              onSelect={() => {
+                                form.setValue("agentId", option.value)
+                              }}
+                            >
+                              <Check
+                                className={cn(
+                                  "mr-2 h-4 w-4",
+                                  option.value === field.value
+                                    ? "opacity-100"
+                                    : "opacity-0"
+                                )}
+                              />
+                              {option.label}
+                            </CommandItem>
+                          ))}
+                        </CommandGroup>
+                      </CommandList>
+                    </Command>
+                  </PopoverContent>
+                </Popover>
               <FormMessage />
             </FormItem>
           )}
