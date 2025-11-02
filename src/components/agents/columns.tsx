@@ -88,7 +88,7 @@ export const columns: ColumnDef<Agent>[] = [
       )
     },
     cell: ({ row }) => {
-      return <div className="text-left">{row.getValue("country")}</div>
+      return <div>{row.getValue("country")}</div>
     }
   },
   {
