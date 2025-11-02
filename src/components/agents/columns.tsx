@@ -46,6 +46,7 @@ export const columns: ColumnDef<Agent>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="p-0"
         >
           Agent
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -70,7 +71,7 @@ export const columns: ColumnDef<Agent>[] = [
   },
   {
     accessorKey: "visaType",
-    header: "Visa Type",
+    header: "Visa Specialization",
   },
   {
     accessorKey: "country",
@@ -79,6 +80,7 @@ export const columns: ColumnDef<Agent>[] = [
         <Button
           variant="ghost"
           onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
+          className="p-0"
         >
           Country
           <ArrowUpDown className="ml-2 h-4 w-4" />
@@ -87,8 +89,12 @@ export const columns: ColumnDef<Agent>[] = [
     },
   },
   {
+    accessorKey: "totalFiles",
+    header: "Total Files",
+  },
+  {
     accessorKey: "due",
-    header: "Due",
+    header: "Commission Due",
     cell: ({ row }) => {
         const amount = parseFloat(row.getValue("due"))
         const formatted = new Intl.NumberFormat("en-US", {
@@ -96,12 +102,12 @@ export const columns: ColumnDef<Agent>[] = [
           currency: "USD",
         }).format(amount)
    
-        return <div className="font-medium">{formatted}</div>
+        return <div className="font-medium text-destructive">{formatted}</div>
     },
   },
   {
     accessorKey: "paid",
-    header: "Paid",
+    header: "Commission Paid",
     cell: ({ row }) => {
         const amount = parseFloat(row.getValue("paid"))
         const formatted = new Intl.NumberFormat("en-US", {
@@ -109,12 +115,8 @@ export const columns: ColumnDef<Agent>[] = [
           currency: "USD",
         }).format(amount)
    
-        return <div className="font-medium">{formatted}</div>
+        return <div className="font-medium text-green-600">{formatted}</div>
     },
-  },
-  {
-    accessorKey: "totalFiles",
-    header: "Total Files",
   },
   {
     id: "actions",
