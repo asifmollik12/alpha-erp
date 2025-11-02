@@ -8,8 +8,7 @@ import {
   ChartTooltipContent,
 } from "@/components/ui/chart"
 import { getClientDemographicsData } from "@/lib/data"
-
-const chartData = getClientDemographicsData()
+import { useClientState } from "@/hooks/use-client-state"
 
 const chartConfig = {
   count: {
@@ -19,6 +18,9 @@ const chartConfig = {
 }
 
 export function ClientDemographicsChart() {
+  const { clients } = useClientState();
+  const chartData = getClientDemographicsData(clients);
+
   return (
     <ChartContainer config={chartConfig} className="h-[300px] w-full">
       <BarChart accessibilityLayer data={chartData} layout="vertical" margin={{ top: 20, left: 10, right: 20 }}>

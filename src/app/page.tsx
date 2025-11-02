@@ -1,3 +1,5 @@
+"use client"
+
 import {
   Activity,
   ArrowUpRight,
@@ -37,10 +39,12 @@ import {
   getStats
 } from "@/lib/data";
 import { ApplicationStatusChart } from "@/components/reports/application-status-chart";
+import { useClientState } from "@/hooks/use-client-state"
 
 export default function Dashboard() {
-  const stats = getStats();
-  const recentApplications = getRecentApplications();
+  const { clients } = useClientState();
+  const stats = getStats(clients);
+  const recentApplications = getRecentApplications(clients);
 
   return (
     <div className="flex min-h-screen w-full flex-col">

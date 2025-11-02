@@ -1,3 +1,5 @@
+"use client"
+
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
 import { SuccessRateChart } from "@/components/reports/success-rate-chart";
 import { ProcessingTimeChart } from "@/components/reports/processing-time-chart";

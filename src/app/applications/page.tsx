@@ -1,8 +1,12 @@
-import { getApplications } from "@/lib/data";
+"use client"
+
 import { KanbanBoard } from "@/components/applications/kanban-board";
+import { useClientState } from "@/hooks/use-client-state";
+import { getApplications } from "@/lib/data";
 
 export default function ApplicationsPage() {
-  const applications = getApplications();
+  const { clients } = useClientState();
+  const applications = getApplications(clients);
 
   return (
     <div className="space-y-4">

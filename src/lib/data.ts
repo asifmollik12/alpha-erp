@@ -14,7 +14,8 @@ export const initialClients: Client[] = [
   { id: '10', name: 'Jane Smith', email: 'jane@example.com', country: 'USA', visaType: 'Tourist Visa', status: 'In Progress', appliedDate: '2024-03-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-10')?.imageUrl || '' },
 ];
 
-const applications: Application[] = initialClients.map(client => ({
+
+export const getApplications = (clients: Client[]): Application[] => clients.map(client => ({
     id: client.id,
     clientName: client.name,
     visaType: client.visaType,
@@ -24,21 +25,23 @@ const applications: Application[] = initialClients.map(client => ({
     avatar: client.avatar,
 }));
 
-export const getClients = (): Client[] => initialClients;
-export const getApplications = (): Application[] => applications;
-export const getRecentApplications = (): Application[] => applications.slice(0, 5);
+export const getRecentApplications = (clients: Client[]): Application[] => getApplications(clients).sort((a,b) => new Date(b.lastUpdate).getTime() - new Date(a.lastUpdate).getTime()).slice(0, 5);
 
-export const getStats = () => {
+export const getStats = (clients: Client[]) => {
+  const applications = getApplications(clients);
+  const completedApplications = applications.filter(a => a.status === 'Approved' || a.status === 'Rejected').length;
+
   return {
-    totalClients: initialClients.length,
-    newClientsThisMonth: initialClients.filter(c => new Date(c.appliedDate) > new Date(new Date().setDate(new Date().getDate() - 30))).length,
+    totalClients: clients.length,
+    newClientsThisMonth: clients.filter(c => new Date(c.appliedDate) > new Date(new Date().setDate(new Date().getDate() - 30))).length,
     inProgressApplications: applications.filter(a => a.status === 'In Progress').length,
-    successRate: Math.round((applications.filter(a => a.status === 'Approved').length / applications.filter(a => a.status === 'Approved' || a.status === 'Rejected').length) * 100),
-    avgProcessingTimeDays: 45,
+    successRate: completedApplications > 0 ? Math.round((applications.filter(a => a.status === 'Approved').length / completedApplications) * 100) : 0,
+    avgProcessingTimeDays: 45, // This remains a static value for now
   };
 };
 
-export const getApplicationStatusCounts = () => {
+export const getApplicationStatusCounts = (clients: Client[]) => {
+    const applications = getApplications(clients);
     const counts: Record<ApplicationStatus, number> = {
         'New': 0,
         'In Progress': 0,
@@ -52,7 +55,8 @@ export const getApplicationStatusCounts = () => {
     return Object.entries(counts).map(([status, count]) => ({ status, count }));
 };
 
-export const getSuccessRateData = () => {
+export const getSuccessRateData = (clients: Client[]) => {
+    const applications = getApplications(clients);
     const approved = applications.filter(app => app.status === 'Approved').length;
     const rejected = applications.filter(app => app.status === 'Rejected').length;
     const inProgress = applications.length - approved - rejected;
@@ -68,9 +72,9 @@ export const getProcessingTimeData = () => {
     ];
 };
 
-export const getClientDemographicsData = () => {
+export const getClientDemographicsData = (clients: Client[]) => {
     const demographics: Record<string, number> = {};
-    initialClients.forEach(client => {
+    clients.forEach(client => {
         demographics[client.country] = (demographics[client.country] || 0) + 1;
     });
     return Object.entries(demographics).map(([country, count]) => ({ country, count }));

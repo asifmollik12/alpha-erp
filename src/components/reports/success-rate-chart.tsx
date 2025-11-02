@@ -11,8 +11,7 @@ import {
   ChartLegendContent,
 } from "@/components/ui/chart"
 import { getSuccessRateData } from "@/lib/data"
-
-const chartData = getSuccessRateData()
+import { useClientState } from "@/hooks/use-client-state"
 
 const chartConfig = {
   value: {
@@ -33,6 +32,9 @@ const chartConfig = {
 }
 
 export function SuccessRateChart() {
+  const { clients } = useClientState();
+  const chartData = getSuccessRateData(clients);
+
   return (
     <ChartContainer
       config={chartConfig}

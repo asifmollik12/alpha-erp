@@ -10,8 +10,7 @@ import {
   ChartLegend,
   ChartLegendContent,
 } from "@/components/ui/chart"
-
-const chartData = getApplicationStatusCounts();
+import { useClientState } from "@/hooks/use-client-state"
 
 const chartConfig = {
   count: {
@@ -48,6 +47,9 @@ const colorMapping: Record<string, string> = {
 }
 
 export function ApplicationStatusChart() {
+  const { clients } = useClientState();
+  const chartData = getApplicationStatusCounts(clients);
+
   return (
     <ChartContainer
       config={chartConfig}
