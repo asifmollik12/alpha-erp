@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, BarChart2, FolderKanban } from 'lucide-react';
+import { LayoutDashboard, Users, BarChart2, FolderKanban, PlusCircle } from 'lucide-react';
 import {
   SidebarContent,
   SidebarHeader,
@@ -16,6 +16,10 @@ import { Button } from './ui/button';
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar';
 import { DropdownMenu, DropdownMenuTrigger, DropdownMenuContent, DropdownMenuItem, DropdownMenuLabel, DropdownMenuSeparator } from './ui/dropdown-menu';
 import { PlaceHolderImages } from '@/lib/placeholder-images';
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription } from './ui/dialog';
+import { AddClientForm } from './clients/add-client-form';
+import React from 'react';
+import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 const links = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
@@ -28,6 +32,7 @@ const headerAvatar = PlaceHolderImages.find(img => img.id === 'header-avatar');
 
 export function AppSidebar() {
     const pathname = usePathname();
+    const [isAddClientOpen, setIsAddClientOpen] = React.useState(false);
 
     return (
         <>
@@ -51,22 +56,47 @@ export function AppSidebar() {
             </SidebarHeader>
             <Separator className="group-data-[collapsible=icon]:hidden" />
             <SidebarContent>
-                <SidebarMenu>
-                    {links.map((link) => (
-                        <SidebarMenuItem key={link.href}>
-                            <SidebarMenuButton
-                                asChild
-                                isActive={pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))}
-                                tooltip={{children: link.label, side: 'right', align: 'center'}}
-                            >
-                                <Link href={link.href}>
-                                    <link.icon />
-                                    <span>{link.label}</span>
-                                </Link>
-                            </SidebarMenuButton>
-                        </SidebarMenuItem>
-                    ))}
-                </SidebarMenu>
+                <Dialog open={isAddClientOpen} onOpenChange={setIsAddClientOpen}>
+                    <SidebarMenu>
+                        {links.map((link) => (
+                            <SidebarMenuItem key={link.href} className="relative">
+                                <SidebarMenuButton
+                                    asChild
+                                    isActive={pathname === link.href || (link.href !== '/' && pathname.startsWith(link.href))}
+                                    tooltip={{children: link.label, side: 'right', align: 'center'}}
+                                >
+                                    <Link href={link.href}>
+                                        <link.icon />
+                                        <span>{link.label}</span>
+                                    </Link>
+                                </SidebarMenuButton>
+                                {link.href === '/clients' && (
+                                    <DialogTrigger asChild>
+                                        <Tooltip>
+                                            <TooltipTrigger asChild>
+                                                <button className="absolute right-2 top-1/2 -translate-y-1/2 p-1 text-muted-foreground hover:text-foreground group-data-[collapsible=icon]:hidden">
+                                                    <PlusCircle className="h-4 w-4" />
+                                                </button>
+                                            </TooltipTrigger>
+                                            <TooltipContent side="right" align="center">
+                                                Add Client
+                                            </TooltipContent>
+                                        </Tooltip>
+                                    </DialogTrigger>
+                                )}
+                            </SidebarMenuItem>
+                        ))}
+                    </SidebarMenu>
+                    <DialogContent className="sm:max-w-[425px]">
+                        <DialogHeader>
+                            <DialogTitle>Add New Client</DialogTitle>
+                            <DialogDescription>
+                                Enter the details of the new client. Click save when you're done.
+                            </DialogDescription>
+                        </DialogHeader>
+                        <AddClientForm setOpen={setIsAddClientOpen} />
+                    </DialogContent>
+                </Dialog>
             </SidebarContent>
             <Separator />
             <SidebarFooter>
