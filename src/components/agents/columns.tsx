@@ -79,21 +79,7 @@ export const columns: ColumnDef<Agent>[] = [
   },
   {
     accessorKey: "country",
-    header: ({ column }) => {
-      return (
-        <Button
-          variant="ghost"
-          onClick={() => column.toggleSorting(column.getIsSorted() === "asc")}
-          className="p-0 hover:bg-transparent"
-        >
-          Country
-          <ArrowUpDown className="ml-2 h-4 w-4" />
-        </Button>
-      )
-    },
-    cell: ({ row }) => {
-      return <div>{row.getValue("country")}</div>
-    }
+    header: "Country",
   },
   {
     accessorKey: "totalFiles",
