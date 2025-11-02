@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dialog"
 import { AddClientForm } from "./add-client-form"
 import React from "react"
+import { useClientState } from "@/hooks/use-client-state"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -22,9 +23,15 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
-  const isFiltered = table.getState().columnFilters.length > 0
+  const { deleteClients } = useClientState();
   const numSelected = table.getFilteredSelectedRowModel().rows.length
   const [isAddClientOpen, setIsAddClientOpen] = React.useState(false);
+
+  const handleDelete = () => {
+    const selectedIds = table.getFilteredSelectedRowModel().rows.map(row => (row.original as { id: string }).id);
+    deleteClients(selectedIds);
+    table.resetRowSelection();
+  };
 
   return (
     <div className="flex items-center justify-between">
@@ -42,10 +49,7 @@ export function DataTableToolbar<TData>({
             variant="destructive"
             size="sm"
             className="h-9 gap-1"
-            onClick={() => {
-              // Your delete logic here
-              console.log(`Deleting ${numSelected} rows`)
-            }}
+            onClick={handleDelete}
           >
             <Trash2 className="h-4 w-4" />
             <span className="hidden sm:inline">Delete ({numSelected})</span>

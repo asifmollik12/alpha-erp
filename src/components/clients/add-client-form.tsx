@@ -22,6 +22,8 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
+import { useClientState } from "@/hooks/use-client-state"
+import { Client } from "@/lib/types"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -43,6 +45,7 @@ interface AddClientFormProps {
 
 export function AddClientForm({ setOpen }: AddClientFormProps) {
   const { toast } = useToast()
+  const { addClient } = useClientState();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -54,9 +57,14 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values)
-    // Here you would typically handle the form submission, e.g., send data to your server.
-    // For now, we'll just log it and show a toast.
+    const newClient: Client = {
+      id: new Date().getTime().toString(),
+      ...values,
+      status: 'New',
+      appliedDate: new Date().toISOString().split('T')[0],
+      avatar: `https://picsum.photos/seed/${Math.random()}/40/40`
+    };
+    addClient(newClient);
     toast({
       title: "Client Added",
       description: `${values.name} has been successfully added.`,

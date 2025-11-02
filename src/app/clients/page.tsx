@@ -1,9 +1,10 @@
-import { getClients } from "@/lib/data";
+"use client"
+import { useClientState } from "@/hooks/use-client-state";
 import { ClientTable } from "@/components/clients/client-table";
 import { columns } from "@/components/clients/columns";
 
 export default function ClientsPage() {
-  const clients = getClients();
+  const { clients } = useClientState();
 
   return (
     <div className="space-y-4">
