@@ -11,7 +11,7 @@ interface ClientState {
 export const useClientState = create<ClientState>((set) => ({
   clients: initialClients,
   addClient: (client) =>
-    set((state) => ({ clients: [...state.clients, client] })),
+    set((state) => ({ clients: [client, ...state.clients] })),
   deleteClients: (clientIds) =>
     set((state) => ({
       clients: state.clients.filter((client) => !clientIds.includes(client.id)),
