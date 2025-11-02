@@ -4,6 +4,7 @@ export type Client = {
   id: string;
   name: string;
   email: string;
+  passportNumber?: string;
   country: string;
   visaType: string;
   status: ApplicationStatus;

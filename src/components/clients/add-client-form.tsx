@@ -37,6 +37,7 @@ const formSchema = z.object({
   email: z.string().email({
     message: "Please enter a valid email address.",
   }),
+  passportNumber: z.string().optional(),
   country: z.string().min(1, { message: "Please select a country." }),
   visaType: z.string().min(1, { message: "Please select a visa type." }),
   appliedDate: z.date({
@@ -60,6 +61,7 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
     defaultValues: {
       name: "",
       email: "",
+      passportNumber: "",
       country: "",
       visaType: "",
     },
@@ -71,6 +73,7 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
       id: newClientId,
       name: values.name,
       email: values.email,
+      passportNumber: values.passportNumber,
       country: values.country,
       visaType: values.visaType,
       status: 'New',
@@ -118,6 +121,19 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
               <FormLabel>Email</FormLabel>
               <FormControl>
                 <Input placeholder="john.doe@example.com" {...field} />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+        <FormField
+          control={form.control}
+          name="passportNumber"
+          render={({ field }) => (
+            <FormItem>
+              <FormLabel>Passport Number</FormLabel>
+              <FormControl>
+                <Input placeholder="A12345678" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

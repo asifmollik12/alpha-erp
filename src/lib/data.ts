@@ -2,16 +2,16 @@ import { Client, Application, ApplicationStatus, Agent } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 export const initialClients: Client[] = [
-  { id: '1', name: 'Alice Johnson', email: 'alice@example.com', country: 'USA', visaType: 'Work Permit', status: 'Approved', appliedDate: '2023-10-15', avatar: PlaceHolderImages.find(img => img.id === 'avatar-1')?.imageUrl || '' },
-  { id: '2', name: 'Bob Williams', email: 'bob@example.com', country: 'UK', visaType: 'Student Visa', status: 'In Progress', appliedDate: '2023-11-20', avatar: PlaceHolderImages.find(img => img.id === 'avatar-2')?.imageUrl || '' },
-  { id: '3', name: 'Charlie Brown', email: 'charlie@example.com', country: 'Canada', visaType: 'Tourist Visa', status: 'Submitted', appliedDate: '2024-01-05', avatar: PlaceHolderImages.find(img => img.id === 'avatar-3')?.imageUrl || '' },
-  { id: '4', name: 'Diana Miller', email: 'diana@example.com', country: 'Australia', visaType: 'Permanent Resident', status: 'New', appliedDate: '2024-02-12', avatar: PlaceHolderImages.find(img => img.id === 'avatar-4')?.imageUrl || '' },
-  { id: '5', name: 'Ethan Davis', email: 'ethan@example.com', country: 'Germany', visaType: 'Work Permit', status: 'Rejected', appliedDate: '2023-09-30', avatar: PlaceHolderImages.find(img => img.id === 'avatar-5')?.imageUrl || '' },
-  { id: '6', name: 'Fiona Garcia', email: 'fiona@example.com', country: 'USA', visaType: 'Student Visa', status: 'Approved', appliedDate: '2023-12-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-6')?.imageUrl || '' },
-  { id: '7', name: 'George Rodriguez', email: 'george@example.com', country: 'Canada', visaType: 'Work Permit', status: 'In Progress', appliedDate: '2024-01-22', avatar: PlaceHolderImages.find(img => img.id === 'avatar-7')?.imageUrl || '' },
-  { id: '8', name: 'Hannah Wilson', email: 'hannah@example.com', country: 'UK', visaType: 'Tourist Visa', status: 'New', appliedDate: '2024-02-18', avatar: PlaceHolderImages.find(img => img.id === 'avatar-8')?.imageUrl || '' },
-  { id: '9', name: 'Ian Martinez', email: 'ian@example.com', country: 'Australia', visaType: 'Student Visa', status: 'Submitted', appliedDate: '2024-02-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-9')?.imageUrl || '' },
-  { id: '10', name: 'Jane Smith', email: 'jane@example.com', country: 'USA', visaType: 'Tourist Visa', status: 'In Progress', appliedDate: '2024-03-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-10')?.imageUrl || '' },
+  { id: '1', name: 'Alice Johnson', email: 'alice@example.com', passportNumber: 'A12345678', country: 'USA', visaType: 'Work Permit', status: 'Approved', appliedDate: '2023-10-15', avatar: PlaceHolderImages.find(img => img.id === 'avatar-1')?.imageUrl || '' },
+  { id: '2', name: 'Bob Williams', email: 'bob@example.com', passportNumber: 'B87654321', country: 'UK', visaType: 'Student Visa', status: 'In Progress', appliedDate: '2023-11-20', avatar: PlaceHolderImages.find(img => img.id === 'avatar-2')?.imageUrl || '' },
+  { id: '3', name: 'Charlie Brown', email: 'charlie@example.com', passportNumber: 'C55555555', country: 'Canada', visaType: 'Tourist Visa', status: 'Submitted', appliedDate: '2024-01-05', avatar: PlaceHolderImages.find(img => img.id === 'avatar-3')?.imageUrl || '' },
+  { id: '4', name: 'Diana Miller', email: 'diana@example.com', passportNumber: 'D44444444', country: 'Australia', visaType: 'Permanent Resident', status: 'New', appliedDate: '2024-02-12', avatar: PlaceHolderImages.find(img => img.id === 'avatar-4')?.imageUrl || '' },
+  { id: '5', name: 'Ethan Davis', email: 'ethan@example.com', passportNumber: 'E33333333', country: 'Germany', visaType: 'Work Permit', status: 'Rejected', appliedDate: '2023-09-30', avatar: PlaceHolderImages.find(img => img.id === 'avatar-5')?.imageUrl || '' },
+  { id: '6', name: 'Fiona Garcia', email: 'fiona@example.com', passportNumber: 'F22222222', country: 'USA', visaType: 'Student Visa', status: 'Approved', appliedDate: '2023-12-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-6')?.imageUrl || '' },
+  { id: '7', name: 'George Rodriguez', email: 'george@example.com', passportNumber: 'G11111111', country: 'Canada', visaType: 'Work Permit', status: 'In Progress', appliedDate: '2024-01-22', avatar: PlaceHolderImages.find(img => img.id === 'avatar-7')?.imageUrl || '' },
+  { id: '8', name: 'Hannah Wilson', email: 'hannah@example.com', passportNumber: 'H99999999', country: 'UK', visaType: 'Tourist Visa', status: 'New', appliedDate: '2024-02-18', avatar: PlaceHolderImages.find(img => img.id === 'avatar-8')?.imageUrl || '' },
+  { id: '9', name: 'Ian Martinez', email: 'ian@example.com', passportNumber: 'I88888888', country: 'Australia', visaType: 'Student Visa', status: 'Submitted', appliedDate: '2024-02-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-9')?.imageUrl || '' },
+  { id: '10', name: 'Jane Smith', email: 'jane@example.com', passportNumber: 'J77777777', country: 'USA', visaType: 'Tourist Visa', status: 'In Progress', appliedDate: '2024-03-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-10')?.imageUrl || '' },
 ];
 
 export const initialAgents: Agent[] = [

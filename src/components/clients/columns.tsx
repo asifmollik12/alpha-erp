@@ -69,6 +69,10 @@ export const columns: ColumnDef<Client>[] = [
     }
   },
   {
+    accessorKey: "passportNumber",
+    header: "Passport No.",
+  },
+  {
     accessorKey: "visaType",
     header: "Visa Type",
   },
