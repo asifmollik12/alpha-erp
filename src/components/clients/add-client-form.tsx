@@ -24,6 +24,11 @@ import {
 import { useToast } from "@/hooks/use-toast"
 import { useClientState } from "@/hooks/use-client-state"
 import { Client } from "@/lib/types"
+import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
+import { CalendarIcon } from "lucide-react"
+import { Calendar } from "../ui/calendar"
+import { cn } from "@/lib/utils"
+import { format } from "date-fns"
 
 const formSchema = z.object({
   name: z.string().min(2, {
@@ -34,6 +39,9 @@ const formSchema = z.object({
   }),
   country: z.string().min(1, { message: "Please select a country." }),
   visaType: z.string().min(1, { message: "Please select a visa type." }),
+  appliedDate: z.date({
+    required_error: "An application date is required.",
+  }),
 })
 
 const countries = ["USA", "UK", "Canada", "Australia", "Germany"]
@@ -59,9 +67,12 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     const newClient: Client = {
       id: new Date().getTime().toString(),
-      ...values,
+      name: values.name,
+      email: values.email,
+      country: values.country,
+      visaType: values.visaType,
       status: 'New',
-      appliedDate: new Date().toISOString().split('T')[0],
+      appliedDate: values.appliedDate.toISOString().split('T')[0],
       avatar: `https://picsum.photos/seed/${Math.random()}/40/40`
     };
     addClient(newClient);
@@ -142,6 +153,47 @@ export function AddClientForm({ setOpen }: AddClientFormProps) {
                   ))}
                 </SelectContent>
               </Select>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+         <FormField
+          control={form.control}
+          name="appliedDate"
+          render={({ field }) => (
+            <FormItem className="flex flex-col">
+              <FormLabel>Applied Date</FormLabel>
+              <Popover>
+                <PopoverTrigger asChild>
+                  <FormControl>
+                    <Button
+                      variant={"outline"}
+                      className={cn(
+                        "w-full pl-3 text-left font-normal",
+                        !field.value && "text-muted-foreground"
+                      )}
+                    >
+                      {field.value ? (
+                        format(field.value, "PPP")
+                      ) : (
+                        <span>Pick a date</span>
+                      )}
+                      <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                    </Button>
+                  </FormControl>
+                </PopoverTrigger>
+                <PopoverContent className="w-auto p-0" align="start">
+                  <Calendar
+                    mode="single"
+                    selected={field.value}
+                    onSelect={field.onChange}
+                    disabled={(date) =>
+                      date > new Date() || date < new Date("1900-01-01")
+                    }
+                    initialFocus
+                  />
+                </PopoverContent>
+              </Popover>
               <FormMessage />
             </FormItem>
           )}
