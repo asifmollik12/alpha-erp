@@ -11,6 +11,18 @@ export type Client = {
   avatar: string;
 };
 
+export type Agent = {
+  id: string;
+  name: string;
+  email: string;
+  country: string;
+  visaType: string;
+  due: number;
+  paid: number;
+  totalFiles: number;
+  avatar: string;
+};
+
 export type Application = {
   id:string;
   clientName: string;

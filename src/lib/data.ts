@@ -1,4 +1,4 @@
-import { Client, Application, ApplicationStatus } from './types';
+import { Client, Application, ApplicationStatus, Agent } from './types';
 import { PlaceHolderImages } from './placeholder-images';
 
 export const initialClients: Client[] = [
@@ -14,6 +14,13 @@ export const initialClients: Client[] = [
   { id: '10', name: 'Jane Smith', email: 'jane@example.com', country: 'USA', visaType: 'Tourist Visa', status: 'In Progress', appliedDate: '2024-03-01', avatar: PlaceHolderImages.find(img => img.id === 'avatar-10')?.imageUrl || '' },
 ];
 
+export const initialAgents: Agent[] = [
+    { id: '1', name: 'Agent Smith', email: 'agent.smith@example.com', country: 'USA', visaType: 'Work Permit', due: 500, paid: 2000, totalFiles: 10, avatar: PlaceHolderImages.find(img => img.id === 'avatar-1')?.imageUrl || '' },
+    { id: '2', name: 'Agent Jones', email: 'agent.jones@example.com', country: 'UK', visaType: 'Student Visa', due: 1000, paid: 1500, totalFiles: 8, avatar: PlaceHolderImages.find(img => img.id === 'avatar-2')?.imageUrl || '' },
+    { id: '3', name: 'Agent Brown', email: 'agent.brown@example.com', country: 'Canada', visaType: 'Tourist Visa', due: 0, paid: 3000, totalFiles: 15, avatar: PlaceHolderImages.find(img => img.id === 'avatar-3')?.imageUrl || '' },
+    { id: '4', name: 'Agent White', email: 'agent.white@example.com', country: 'Australia', visaType: 'Permanent Resident', due: 200, paid: 2500, totalFiles: 12, avatar: PlaceHolderImages.find(img => img.id === 'avatar-4')?.imageUrl || '' },
+    { id: '5', name: 'Agent Green', email: 'agent.green@example.com', country: 'Germany', visaType: 'Work Permit', due: 1500, paid: 1000, totalFiles: 5, avatar: PlaceHolderImages.find(img => img.id === 'avatar-5')?.imageUrl || '' },
+];
 
 export const getApplications = (clients: Client[]): Application[] => clients.map(client => ({
     id: client.id,

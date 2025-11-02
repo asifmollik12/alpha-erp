@@ -1,14 +1,15 @@
 import { create } from 'zustand';
-import { Client } from '@/lib/types';
-import { initialClients } from '@/lib/data';
+import { Client, Agent } from '@/lib/types';
+import { initialClients, initialAgents } from '@/lib/data';
 
-interface ClientState {
+interface AppState {
   clients: Client[];
   addClient: (client: Client) => void;
   deleteClients: (clientIds: string[]) => void;
+  agents: Agent[];
 }
 
-export const useClientState = create<ClientState>((set) => ({
+export const useClientState = create<AppState>((set) => ({
   clients: initialClients,
   addClient: (client) =>
     set((state) => ({ clients: [client, ...state.clients] })),
@@ -16,4 +17,5 @@ export const useClientState = create<ClientState>((set) => ({
     set((state) => ({
       clients: state.clients.filter((client) => !clientIds.includes(client.id)),
     })),
+  agents: initialAgents,
 }));
