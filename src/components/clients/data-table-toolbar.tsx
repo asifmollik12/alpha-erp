@@ -4,6 +4,16 @@ import { Table } from "@tanstack/react-table"
 import { Input } from "@/components/ui/input"
 import { Button } from "../ui/button"
 import { PlusCircle, Trash2 } from "lucide-react"
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog"
+import { AddClientForm } from "./add-client-form"
+import React from "react"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
@@ -14,6 +24,7 @@ export function DataTableToolbar<TData>({
 }: DataTableToolbarProps<TData>) {
   const isFiltered = table.getState().columnFilters.length > 0
   const numSelected = table.getFilteredSelectedRowModel().rows.length
+  const [isAddClientOpen, setIsAddClientOpen] = React.useState(false);
 
   return (
     <div className="flex items-center justify-between">
@@ -41,10 +52,23 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-       <Button size="sm" className="h-9 gap-1">
-          <PlusCircle className="h-4 w-4" />
-          <span className="hidden sm:inline">Add Client</span>
-        </Button>
+      <Dialog open={isAddClientOpen} onOpenChange={setIsAddClientOpen}>
+        <DialogTrigger asChild>
+          <Button size="sm" className="h-9 gap-1">
+            <PlusCircle className="h-4 w-4" />
+            <span className="hidden sm:inline">Add Client</span>
+          </Button>
+        </DialogTrigger>
+        <DialogContent className="sm:max-w-[425px]">
+          <DialogHeader>
+            <DialogTitle>Add New Client</DialogTitle>
+            <DialogDescription>
+              Enter the details of the new client. Click save when you're done.
+            </DialogDescription>
+          </DialogHeader>
+          <AddClientForm setOpen={setIsAddClientOpen} />
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }
