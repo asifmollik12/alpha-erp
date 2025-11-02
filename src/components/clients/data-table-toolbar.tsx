@@ -18,10 +18,12 @@ import { useClientState } from "@/hooks/use-client-state"
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>
+  showAddClientButton?: boolean
 }
 
 export function DataTableToolbar<TData>({
   table,
+  showAddClientButton = true,
 }: DataTableToolbarProps<TData>) {
   const { deleteClients } = useClientState();
   const numSelected = table.getFilteredSelectedRowModel().rows.length
@@ -56,23 +58,25 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      <Dialog open={isAddClientOpen} onOpenChange={setIsAddClientOpen}>
-        <DialogTrigger asChild>
-          <Button size="sm" className="h-9 gap-1">
-            <PlusCircle className="h-4 w-4" />
-            <span className="hidden sm:inline">Add Client</span>
-          </Button>
-        </DialogTrigger>
-        <DialogContent className="sm:max-w-[425px]">
-          <DialogHeader>
-            <DialogTitle>Add New Client</DialogTitle>
-            <DialogDescription>
-              Enter the details of the new client. Click save when you're done.
-            </DialogDescription>
-          </DialogHeader>
-          <AddClientForm setOpen={setIsAddClientOpen} />
-        </DialogContent>
-      </Dialog>
+      {showAddClientButton && (
+        <Dialog open={isAddClientOpen} onOpenChange={setIsAddClientOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm" className="h-9 gap-1">
+              <PlusCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">Add Client</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Add New Client</DialogTitle>
+              <DialogDescription>
+                Enter the details of the new client. Click save when you're done.
+              </DialogDescription>
+            </DialogHeader>
+            <AddClientForm setOpen={setIsAddClientOpen} />
+          </DialogContent>
+        </Dialog>
+      )}
     </div>
   )
 }

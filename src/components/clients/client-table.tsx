@@ -30,11 +30,13 @@ import { Card, CardContent } from "../ui/card"
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
+  showAddClientButton?: boolean;
 }
 
 export function ClientTable<TData, TValue>({
   columns,
   data,
+  showAddClientButton = true,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -66,7 +68,7 @@ export function ClientTable<TData, TValue>({
   return (
     <Card>
       <CardContent className="p-4 sm:p-6">
-        <DataTableToolbar table={table} />
+        <DataTableToolbar table={table} showAddClientButton={showAddClientButton} />
         <div className="rounded-md border mt-4">
           <Table>
             <TableHeader>

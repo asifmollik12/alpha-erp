@@ -124,7 +124,7 @@ export default function AgentDetailsPage() {
           </DialogContent>
         </Dialog>
       </header>
-      <ClientTable columns={columns} data={assignedClients} />
+      <ClientTable columns={columns} data={assignedClients} showAddClientButton={false} />
     </div>
   );
 }
