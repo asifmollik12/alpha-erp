@@ -8,11 +8,15 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, PlusCircle } from "lucide-react";
+import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import React from "react";
+import { AssignClientForm } from "@/components/agents/assign-client-form";
 
 export default function AgentDetailsPage() {
   const { agentId } = useParams();
   const { agents, clients } = useClientState();
+  const [isAssignClientOpen, setIsAssignClientOpen] = React.useState(false);
 
   const agent = agents.find((a) => a.id === agentId);
   const assignedClients = agent?.assignedClients
@@ -93,13 +97,32 @@ export default function AgentDetailsPage() {
           </Card>
       </div>
 
-      <header className="space-y-1">
-        <h2 className="text-xl font-bold tracking-tight md:text-2xl">
-          Assigned Clients
-        </h2>
-        <p className="text-muted-foreground">
-          View and manage clients assigned to {agent.name}.
-        </p>
+      <header className="flex items-center justify-between">
+        <div className="space-y-1">
+          <h2 className="text-xl font-bold tracking-tight md:text-2xl">
+            Assigned Clients
+          </h2>
+          <p className="text-muted-foreground">
+            View and manage clients assigned to {agent.name}.
+          </p>
+        </div>
+        <Dialog open={isAssignClientOpen} onOpenChange={setIsAssignClientOpen}>
+          <DialogTrigger asChild>
+            <Button size="sm" className="h-9 gap-1">
+              <PlusCircle className="h-4 w-4" />
+              <span className="hidden sm:inline">Assign Client</span>
+            </Button>
+          </DialogTrigger>
+          <DialogContent className="sm:max-w-[425px]">
+            <DialogHeader>
+              <DialogTitle>Assign Existing Client</DialogTitle>
+              <DialogDescription>
+                Search for and assign an existing client to {agent.name}.
+              </DialogDescription>
+            </DialogHeader>
+            <AssignClientForm setOpen={setIsAssignClientOpen} agent={agent} />
+          </DialogContent>
+        </Dialog>
       </header>
       <ClientTable columns={columns} data={assignedClients} />
     </div>
