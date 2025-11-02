@@ -14,6 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
 import { Checkbox } from "../ui/checkbox"
+import { useRouter } from "next/navigation"
 
 export const columns: ColumnDef<Agent>[] = [
   {
@@ -119,6 +120,7 @@ export const columns: ColumnDef<Agent>[] = [
     id: "actions",
     cell: ({ row }) => {
       const agent = row.original
+      const router = useRouter()
  
       return (
         <DropdownMenu>
@@ -136,7 +138,7 @@ export const columns: ColumnDef<Agent>[] = [
               Copy agent ID
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem>View agent details</DropdownMenuItem>
+            <DropdownMenuItem onClick={() => router.push(`/agents/${agent.id}`)}>View agent details</DropdownMenuItem>
             <DropdownMenuItem className="text-destructive focus:bg-destructive/10 focus:text-destructive">Delete agent</DropdownMenuItem>
           </DropdownMenuContent>
         </DropdownMenu>

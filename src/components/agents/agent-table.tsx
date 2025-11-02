@@ -26,6 +26,7 @@ import {
 import { Button } from "@/components/ui/button"
 import { DataTableToolbar } from "./data-table-toolbar"
 import { Card, CardContent } from "../ui/card"
+import { useRouter } from "next/navigation"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
@@ -43,6 +44,7 @@ export function AgentTable<TData, TValue>({
   )
   const [columnVisibility, setColumnVisibility] =
     React.useState<VisibilityState>({})
+  const router = useRouter()
 
   const table = useReactTable({
     data,
@@ -62,6 +64,10 @@ export function AgentTable<TData, TValue>({
       rowSelection,
     },
   })
+
+  const handleRowClick = (row) => {
+    router.push(`/agents/${row.original.id}`)
+  }
 
   return (
     <Card>
@@ -93,9 +99,18 @@ export function AgentTable<TData, TValue>({
                   <TableRow
                     key={row.id}
                     data-state={row.getIsSelected() && "selected"}
+                    onClick={() => handleRowClick(row)}
+                    className="cursor-pointer"
                   >
                     {row.getVisibleCells().map((cell) => (
-                      <TableCell key={cell.id}>
+                      <TableCell
+                        key={cell.id}
+                        onClick={(e) => {
+                          if (cell.column.id === 'select' || cell.column.id === 'actions') {
+                            e.stopPropagation();
+                          }
+                        }}
+                      >
                         {flexRender(cell.column.columnDef.cell, cell.getContext())}
                       </TableCell>
                     ))}

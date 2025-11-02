@@ -21,6 +21,7 @@ export type Agent = {
   paid: number;
   totalFiles: number;
   avatar: string;
+  assignedClients?: string[];
 };
 
 export type Application = {

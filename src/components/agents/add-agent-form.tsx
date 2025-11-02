@@ -70,6 +70,7 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
       email: values.email,
       country: values.country,
       visaType: values.visaType,
+      assignedClients: values.assignedClients || [],
       due: 0, // Default value
       paid: 0, // Default value
       totalFiles: values.assignedClients?.length || 0,
@@ -188,7 +189,8 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
                                   variant="secondary"
                                   key={client.id}
                                   className="mr-1 mb-1"
-                                  onClick={() => {
+                                  onClick={(e) => {
+                                      e.stopPropagation();
                                       const newValue = selectedClients.filter(id => id !== client.id);
                                       field.onChange(newValue);
                                   }}
