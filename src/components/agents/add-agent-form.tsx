@@ -22,7 +22,7 @@ import {
 } from "@/components/ui/select"
 import { useToast } from "@/hooks/use-toast"
 import { useClientState } from "@/hooks/use-client-state"
-import { Agent, Client } from "@/lib/types"
+import { Agent } from "@/lib/types"
 import React from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
@@ -64,16 +64,17 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
   })
 
   function onSubmit(values: z.infer<typeof formSchema>) {
+    const assignedClientIds = values.assignedClients || [];
     const newAgent: Agent = {
       id: new Date().getTime().toString(),
       name: values.name,
       email: values.email,
       country: values.country,
       visaType: values.visaType,
-      assignedClients: values.assignedClients || [],
+      assignedClients: assignedClientIds,
       due: 0, // Default value
       paid: 0, // Default value
-      totalFiles: values.assignedClients?.length || 0,
+      totalFiles: assignedClientIds.length,
       avatar: `https://picsum.photos/seed/${Math.random()}/40/40`
     };
     addAgent(newAgent);
