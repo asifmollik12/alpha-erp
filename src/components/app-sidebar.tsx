@@ -2,7 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Users, BarChart2, FolderKanban, PlusCircle } from 'lucide-react';
+import { LayoutDashboard, Users, BarChart2, FolderKanban, PlusCircle, Briefcase } from 'lucide-react';
 import {
   SidebarContent,
   SidebarHeader,
@@ -23,6 +23,7 @@ import { Tooltip, TooltipContent, TooltipTrigger } from './ui/tooltip';
 
 const links = [
   { href: '/', label: 'Dashboard', icon: LayoutDashboard },
+  { href: '/agents', label: 'Agents', icon: Briefcase },
   { href: '/clients', label: 'Clients', icon: Users },
   { href: '/applications', label: 'Applications', icon: FolderKanban },
   { href: '/reports', label: 'Reports', icon: BarChart2 },
