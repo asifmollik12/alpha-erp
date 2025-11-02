@@ -23,7 +23,7 @@ import {
 import { useToast } from "@/hooks/use-toast"
 import { useClientState } from "@/hooks/use-client-state"
 import { Agent } from "@/lib/types"
-import React from "react"
+import React, { useEffect } from "react"
 import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover"
 import { Command, CommandEmpty, CommandGroup, CommandInput, CommandItem, CommandList } from "../ui/command"
 import { Check, ChevronsUpDown, X } from "lucide-react"
@@ -40,6 +40,9 @@ const formSchema = z.object({
   country: z.string().min(1, { message: "Please select a country." }),
   visaType: z.string().min(1, { message: "Please select a visa type." }),
   assignedClients: z.array(z.string()).optional(),
+  visaUnitPrice: z.coerce.number().min(0, { message: "Price must be a positive number."}).optional(),
+  paid: z.coerce.number().min(0, { message: "Paid amount must be a positive number."}).optional(),
+  refund: z.coerce.number().min(0, { message: "Refund must be a positive number."}).optional(),
 })
 
 const countries = ["USA", "UK", "Canada", "Australia", "Germany"]
@@ -60,8 +63,15 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
       country: "",
       visaType: "",
       assignedClients: [],
+      visaUnitPrice: 0,
+      paid: 0,
+      refund: 0,
     },
   })
+
+  const visaUnitPrice = form.watch("visaUnitPrice") || 0;
+  const paidAmount = form.watch("paid") || 0;
+  const dueAmount = visaUnitPrice - paidAmount;
 
   function onSubmit(values: z.infer<typeof formSchema>) {
     const newAgentId = new Date().getTime().toString();
@@ -74,8 +84,10 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
       country: values.country,
       visaType: values.visaType,
       assignedClients: assignedClientIds,
-      due: 0, 
-      paid: 0,
+      due: (values.visaUnitPrice || 0) - (values.paid || 0),
+      paid: values.paid || 0,
+      refund: values.refund || 0,
+      visaUnitPrice: values.visaUnitPrice || 0,
       totalFiles: assignedClientIds.length,
       avatar: `https://picsum.photos/seed/${newAgentId}/40/40`
     };
@@ -170,6 +182,55 @@ export function AddAgentForm({ setOpen }: AddAgentFormProps) {
               </FormItem>
             )}
           />
+        </div>
+        <div className="grid grid-cols-2 gap-4">
+             <FormField
+                control={form.control}
+                name="visaUnitPrice"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Visa Unit Price</FormLabel>
+                    <FormControl>
+                        <Input type="number" placeholder="0.00" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+                />
+            <FormField
+                control={form.control}
+                name="paid"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Paid Amount</FormLabel>
+                    <FormControl>
+                        <Input type="number" placeholder="0.00" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+            />
+        </div>
+         <div className="grid grid-cols-2 gap-4">
+            <FormItem>
+              <FormLabel>Due Amount</FormLabel>
+              <FormControl>
+                <Input type="number" value={dueAmount.toFixed(2)} readOnly className="bg-muted" />
+              </FormControl>
+            </FormItem>
+            <FormField
+                control={form.control}
+                name="refund"
+                render={({ field }) => (
+                    <FormItem>
+                    <FormLabel>Refund Amount</FormLabel>
+                    <FormControl>
+                        <Input type="number" placeholder="0.00" {...field} />
+                    </FormControl>
+                    <FormMessage />
+                    </FormItem>
+                )}
+            />
         </div>
         <FormField
           control={form.control}
