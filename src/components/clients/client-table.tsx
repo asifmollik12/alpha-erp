@@ -26,17 +26,22 @@ import {
 import { Button } from "@/components/ui/button"
 import { DataTableToolbar } from "./data-table-toolbar"
 import { Card, CardContent } from "../ui/card"
+import { Agent } from "@/lib/types"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
   showAddClientButton?: boolean;
+  showAssignClientButton?: boolean;
+  agent?: Agent;
 }
 
 export function ClientTable<TData, TValue>({
   columns,
   data,
   showAddClientButton = true,
+  showAssignClientButton = false,
+  agent,
 }: DataTableProps<TData, TValue>) {
   const [rowSelection, setRowSelection] = React.useState({})
   const [sorting, setSorting] = React.useState<SortingState>([])
@@ -68,7 +73,12 @@ export function ClientTable<TData, TValue>({
   return (
     <Card>
       <CardContent className="p-4 sm:p-6">
-        <DataTableToolbar table={table} showAddClientButton={showAddClientButton} />
+        <DataTableToolbar 
+          table={table} 
+          showAddClientButton={showAddClientButton} 
+          showAssignClientButton={showAssignClientButton}
+          agent={agent}
+          />
         <div className="rounded-md border mt-4">
           <Table>
             <TableHeader>

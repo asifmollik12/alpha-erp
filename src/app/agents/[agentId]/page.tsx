@@ -8,8 +8,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { ArrowLeft, PlusCircle } from "lucide-react";
-import { Dialog, DialogContent, DialogDescription, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { ArrowLeft } from "lucide-react";
 import React from "react";
 import { AssignClientForm } from "@/components/agents/assign-client-form";
 
@@ -106,25 +105,14 @@ export default function AgentDetailsPage() {
             View and manage clients assigned to {agent.name}.
           </p>
         </div>
-        <Dialog open={isAssignClientOpen} onOpenChange={setIsAssignClientOpen}>
-          <DialogTrigger asChild>
-            <Button size="sm" className="h-9 gap-1">
-              <PlusCircle className="h-4 w-4" />
-              <span className="hidden sm:inline">Assign Client</span>
-            </Button>
-          </DialogTrigger>
-          <DialogContent className="sm:max-w-[425px]">
-            <DialogHeader>
-              <DialogTitle>Assign Existing Client</DialogTitle>
-              <DialogDescription>
-                Search for and assign an existing client to {agent.name}.
-              </DialogDescription>
-            </DialogHeader>
-            <AssignClientForm setOpen={setIsAssignClientOpen} agent={agent} />
-          </DialogContent>
-        </Dialog>
       </header>
-      <ClientTable columns={columns} data={assignedClients} showAddClientButton={false} />
+      <ClientTable 
+        columns={columns} 
+        data={assignedClients} 
+        showAddClientButton={false} 
+        showAssignClientButton={true}
+        agent={agent}
+        />
     </div>
   );
 }
